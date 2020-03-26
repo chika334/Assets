@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import images from '../images/images.jpeg';
 import side from '../images/side.png';
-import {login} from '../actions/userActions'
+import {login} from '../actions/userActions';
+import {connect} from 'react-redux';
 
 const emailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -41,11 +42,19 @@ class Login extends Component {
 
       handleSubmit(e){
         e.preventDefault();
-        if(login) {
-          this.props.history.push('/profile');
-          console.log('good')
+        if(formValid(this.state)) {
+          const {login} = this.props
+          const user = {
+            email: this.state.email,
+            password: this.state.password
+          }
+          login(user).then((response) => {
+            if(response.payload) {
+              // console.log(this.props.user)
+              this.props.history.push('/profile');
+            }
+          })
         }
-        else console.log('bad')
       }
     
       handleChange (e){
@@ -125,4 +134,12 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const mapStateToProps = (state, ownProps) => {
+  const userDetails = ownProps.history.action ? state.user.loginSucces : "error"
+  // console.log(userDetails)
+  return {
+    user: userDetails
+  }
+}
+
+export default connect(mapStateToProps, {login})(Login);

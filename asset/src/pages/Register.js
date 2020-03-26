@@ -198,4 +198,14 @@ class Register extends Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  // console.log(ownProps)
+  const registerUser = ownProps ? state.user.register : "error"
+  // console.log(registerUser)
+  return {
+    user: registerUser
+  }
+}
+
 export default connect(null, {register})(Register);

@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost/assets')
 
 app.use(express.json());
 app.use('/api/users', users);
-app.use('/login', login);
+app.use('/api/login', login);
 
 if (process.env.NODE_ENV === "production") {
 
