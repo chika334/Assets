@@ -1,7 +1,7 @@
 import {
   LOGGED_IN,
   REGISTERED,
-  // AUTH_USER,
+  AUTH_USER,
   // LOGOUT_USER,
 } from '../actions/types';
 
@@ -11,9 +11,9 @@ export default function(state={},action){
     case REGISTERED:
       return {...state, register: action.payload }
     case LOGGED_IN:
-      return { ...state, loginSucces: action.payload }
-    // case AUTH_USER:
-    //   return {...state, userData: action.payload }
+      return { ...state, loginSuccess: action.payload }
+    case AUTH_USER:
+      return {...state, userData: action.payload }
     // case LOGOUT_USER:
     //   return {...state }
     default:

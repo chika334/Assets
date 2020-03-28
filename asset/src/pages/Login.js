@@ -135,7 +135,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const userDetails = ownProps.history.action ? state.user.loginSucces : "error"
+  const userDetails = ownProps.history.action ? state.user.loginSuccess : "error"
   // console.log(userDetails)
   return {
     user: userDetails

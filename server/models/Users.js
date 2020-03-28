@@ -2,38 +2,88 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const saltRounds = 10;
+const moment = require('moment');
+const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
+const userSchema = mongoose.Schema({
   firstname: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 50
+      type:String,
+      maxlength:50
   },
   lastname: {
-    type: String,
-    required: true,
-    minlength: 5,
+    type:String,
     maxlength: 50
   },
   email: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255,
-    unique: true
+      type:String,
+      trim:true,
+      unique: 1 
   },
   password: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 1024
+      type: String,
+      minglength: 5
+  },
+  role : {
+      type:Number,
+      default: 0 
+  },
+  token : {
+      type: String,
+  },
+  tokenExp :{
+      type: Number
+  }
+})
+
+userSchema.pre('save', function( next ) {
+  var user = this;
+  
+  if(user.isModified('password')){    
+      // console.log('password changed')
+      bcrypt.genSalt(saltRounds, function(err, salt){
+          if(err) return next(err);
+  
+          bcrypt.hash(user.password, salt, function(err, hash){
+              if(err) return next(err);
+              user.password = hash 
+              next()
+          })
+      })
+  } else {
+      next()
   }
 });
 
-userSchema.methods.generateAuthToken = function() {
-  const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
-  return token;
+userSchema.methods.comparePassword = function(plainPassword,cb){
+  bcrypt.compare(plainPassword, this.password, function(err, isMatch){
+    if (err) return cb(err);
+    cb(null, isMatch)
+  })
+}
+
+userSchema.methods.generateToken = function(cb) {
+  var user = this;
+  var token =  jwt.sign(user._id.toHexString(),config.get('jwtPrivateKey'))
+  var oneHour = moment().add(1, 'hour').valueOf();
+
+  user.tokenExp = oneHour;
+  user.token = token;
+  user.save(function (err, user){
+    if(err) return cb(err)
+    cb(null, user);
+  })
+}
+
+userSchema.statics.findByToken = function (token, cb) {
+  var user = this;
+
+  jwt.verify(token,config.get('jwtPrivateKey'),function(err, decode){
+    user.findOne({"_id":decode, "token":token}, function(err, user){
+      if(err) return cb(err);
+      cb(null, user);
+    })
+  })
 }
 
 const User = mongoose.model('User', userSchema);
@@ -49,5 +99,5 @@ function validateUser(user) {
   return Joi.validate(user, schema)
 }
 
-exports.User = User;
-exports.validateUser = validateUser;
+module.exports = { User }
+module.exports.validateUser = validateUser;

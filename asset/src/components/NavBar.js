@@ -1,49 +1,17 @@
 import React, { Component } from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
+import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom';
 import logo from '../images/logo.png';
+import {login, register} from '../actions/userActions';
 
 class NavBar extends Component {
-  logout(e){
-    e.preventDefault()
-    localStorage.removeItem('usertoken')
-    this.props.history.push(`/`)
-  } f
   render() {
-
-    // const loginRegLink = (
-    //   <ul className="navbar-nav">
-    //     <li className="nav-item">
-    //       <Link to="/profile" className="nav-link">
-    //         Login
-    //       </Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <a href="" onClick={this.logout.bind(this)} className="nav-link">
-    //         Register
-    //       </a>
-    //     </li>
-    //   </ul>
-    // )
-
-    // const userLink = (
-    //   <ul className="navbar-nav">
-    //     <li className="nav-item">
-    //       <Link to="/profile" className="nav-link">
-    //         User
-    //       </Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <a href="" onClick={this.logout.bind(this)} className="nav-link">
-    //         logout
-    //       </a>
-    //     </li>
-    //   </ul>
-    // )
-
-    return(
-      <>
-          <Navbar collapseOnSelect>
+    const users = this.props.user
+    // console.log(users)
+    if(users === undefined) {
+      return(
+        <Navbar collapseOnSelect>
           <Navbar.Brand href="#home">
           <img src={logo} className="img" />
           Freshaluck
@@ -55,12 +23,39 @@ class NavBar extends Component {
               <Link to="/about/">About</Link>
               <Link to="/contact/">Contact</Link>
               <Link to="/register/">Signup</Link>
-              {/* {localStorage.usertoken ? userLink : loginRegLink} */}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      </>
       )
+    } 
+    else {
+      return (
+        <Navbar collapseOnSelect>
+          <Navbar.Brand href="#home">
+          <img src={logo} className="img" />
+          Freshaluck
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="navlink">
+              <Link to="/">Good</Link>
+              <Link to="/about/">Now</Link>
+              <Link to="/contact/">Letter</Link>
+              <Link to="/register/">Logout</Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      )
+    }
   }
 }
-export default withRouter(NavBar);
+
+const mapStateToProps = (state, ownProps) => {
+  const userdetails = ownProps ? state.user.loginSuccess : "error"
+  // console.log(userdetails)
+  return {
+    user: userdetails
+  }
+}
+
+export default connect(mapStateToProps, {login})(NavBar);

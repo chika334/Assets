@@ -97,30 +97,6 @@ class Register extends Component {
       }
       this.setState({ formErrors, [name]: value });
     };
-
-    componentDidMount() {
-      this.userData = JSON.parse(localStorage.getItem('user'));
-
-      if(localStorage.getItem('user')) {
-        this.setState({
-          firstname: this.userData.firstname,
-          lastname: this.userData.lastname,
-          email: this.userData.email,
-          password: this.userData.password
-        })
-      } else {
-        this.setState({
-          firstname: '',
-          lastname: '',
-          email: '',
-          password: ''
-        })
-      }
-    }
-
-    componentDidUpdate(nextProps, nextState) {
-      localStorage.setItem('user', JSON.stringify(nextState))
-    }
     
     render() {
       const { formErrors } = this.state;
