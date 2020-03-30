@@ -27,10 +27,10 @@ class App extends Component {
         <Route exact path="/" component={Auth(Login, false)} />
         <Route exact path="/login" component={Auth(Login, false)} />
         <Route exact path="/register" component={Auth(Register, false)} />
-        <Route exact path="/about" component={Auth(About, false)} />
-        <Route exact path="/contact" component={Auth(Contact, false)} />
-        <Route exact path="/profile" component={Auth(Profile, false)} />
-        {/* // <Route exact path="/form" component={Form} /> */}
+        <Route exact path="/about" component={Auth(About, null)} />
+        <Route exact path="/contact" component={Auth(Contact, null)} />
+        <Route exact path="/profile" component={Auth(Profile, null)} />
+        {/* <Route exact path="/form" component={Form} /> */}
         <Route exact component={Error}/>
       </Switch>
       <Footer />

@@ -34,7 +34,6 @@ class Register extends Component {
         lastname: '',
         email: '',
         password: '',
-        setAuthToken: '',
         formErrors: {
           firstname: '',
           lastname: '',
@@ -184,4 +183,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(null, {register})(Register);
+export default connect(mapStateToProps, {register})(Register);

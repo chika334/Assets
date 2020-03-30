@@ -34,13 +34,14 @@ class Login extends Component {
           formErrors: {
             email: "",
             password: ""
-          }
+          },
+          setFormErrorMessage: ""
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
       }
 
-      handleSubmit(e){
+      handleSubmit(e, props){
         e.preventDefault();
         if(formValid(this.state)) {
           const {login} = this.props

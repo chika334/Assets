@@ -23,20 +23,9 @@ mongoose.connect('mongodb://localhost/assets')
   .then(() => console.log('Connected to mongoDB'))
   .catch(err => console.error('Could not connect to mongoDB'))
 
-// app.use(express.json());
+app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/login', login);
-
-// if (process.env.NODE_ENV === "production") {
-
-//   // Set static folder
-//   app.use(express.static("client/build"));
-
-//   // index.html for all page routes
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../asset", "build", "index.html"));
-//   });
-// }
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
