@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const config = require('config');
+const morgan = require('morgan');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -15,9 +16,10 @@ const login = require('./routes/login');
 // }
 
 app.use(cors({ origin: true, credentials: true }))
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 
 mongoose.connect('mongodb://localhost/assets')
   .then(() => console.log('Connected to mongoDB'))
