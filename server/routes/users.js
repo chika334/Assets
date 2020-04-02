@@ -1,23 +1,28 @@
-const {User, validateUser} = require('../models/Users');
+const { User, validateUser } = require('../models/Users');
 const mongoose = require('mongoose');
 const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth');
 
 router.get('/auth', auth, async (req, res) => {
-  const user = await User.findById(req.user.id).select('-password');
-  res.send(user);
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) throw Error('No users exist');
+    res.json(user);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
 })
 
 // saving users details to the database or registering users
 router.post('/', async (req, res) => {
   // checks for error while connecting route
   const { error } = validateUser(req.body);
-  if(error) return res.status(400).send(error.details[0].message);
-  
+  if (error) return res.status(400).send(error.details[0].message);
+
   // verifies if user already exit
   let user = await User.findOne({ email: req.body.email })
-  if (user) return res.status(400).send('User already registered')
+  if (user) return res.status(400).json({ msg: 'User already registered' })
 
   // gets new users info
   user = new User({
@@ -32,7 +37,7 @@ router.post('/', async (req, res) => {
 
   // saves the details to the database
   await user.save();
-  
+
   const token = user.generateAuthToken();
   res.header('x-auth-token', token).send(user);
 })

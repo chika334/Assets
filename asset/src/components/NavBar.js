@@ -3,7 +3,7 @@ import {Navbar, Nav} from 'react-bootstrap';
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom';
 import logo from '../images/logo.png';
-import {login, register} from '../actions/userActions';
+// import {login, register} from '../actions/userActions';
 
 class NavBar extends Component {
   render() {
@@ -50,12 +50,13 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const userdetails = ownProps ? state.user.loginSuccess : "error"
-  // console.log(userdetails)
-  return {
-    user: userdetails
-  }
-}
+// const mapStateToProps = (state, ownProps) => {
+//   const userdetails = ownProps ? state.user.loginSuccess : "error"
+//   // console.log(userdetails)
+//   return {
+//     user: userdetails
+//   }
+// }
 
-export default connect(mapStateToProps, {login})(NavBar);
+// export default connect(mapStateToProps, {login})(NavBar);
+export default NavBar;
