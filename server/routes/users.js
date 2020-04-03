@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth');
+const bcrypt = require('bcrypt');
 
 router.get('/auth', auth, async (req, res) => {
   try {
@@ -18,7 +19,7 @@ router.get('/auth', auth, async (req, res) => {
 router.post('/', async (req, res) => {
   // checks for error while connecting route
   const { error } = validateUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return res.status(400).json({ msg: 'Please enter all fields' });
 
   // verifies if user already exit
   let user = await User.findOne({ email: req.body.email })

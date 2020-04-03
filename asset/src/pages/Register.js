@@ -2,26 +2,13 @@ import React, { Component } from 'react';
 import images from '../images/images.jpeg';
 // import side from '../images/side.png';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { register } from '../actions/authActions';
+import { Alert } from 'react-bootstrap';
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
-
-const formValid = ({ formErrors, ...rest }) => {
-  let valid = true;
-
-  // validate form errors being empty
-  Object.values(formErrors).forEach(val => {
-    val.length > 0 && (valid = false);
-  });
-
-  // validate the form was filled out
-  Object.values(rest).forEach(val => {
-    val === null && (valid = false);
-  });
-
-  return valid;
-};
 
 class Register extends Component {
   userData;
@@ -33,6 +20,7 @@ class Register extends Component {
       lastname: '',
       email: '',
       password: '',
+      msg: null,
       formErrors: {
         firstname: '',
         lastname: '',
@@ -44,11 +32,43 @@ class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    register: PropTypes.func.isRequired
+  }
+
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props;
+    if (error !== prevProps.error) {
+      // Check for register error
+      if (error.id === 'REGISTER_FAIL') {
+        this.setState({ msg: error.msg.msg })
+      } else {
+        this.setState({ msg: null })
+      }
+    }
+
+    // if authenticated redirect
+    if (isAuthenticated) {
+      this.push.history("/profile")
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
-    if (formValid(this.state)) {
-      console.log("nice");
+    const { firstname, lastname, email, password } = this.state;
+
+    // User object
+    const newUser = {
+      firstname,
+      lastname,
+      email,
+      password
     }
+
+    // Attempt to register
+    this.props.register(newUser);
   }
 
   onChange(e) {
@@ -86,9 +106,9 @@ class Register extends Component {
         <img src={images} className="backside" />
         <div className="wrapper">
           <div className="form-wrapper">
-            <h1>Login</h1>
+            <h1>Create Account</h1>
+            {this.state.msg ? <Alert variant="danger">{this.state.msg}</Alert> : null}
             <form onSubmit={this.onSubmit} noValidate>
-
               <div className="first_name">
                 <label htmlFor="first_name">First name</label>
                 <input
@@ -156,13 +176,9 @@ class Register extends Component {
   }
 }
 
-// const mapStateToProps = (state, ownProps) => {
-//   // console.log(ownProps)
-//   const registerUser = ownProps ? state.user.register : "error"
-//   // console.log(registerUser)
-//   return {
-//     user: registerUser
-//   }
-// }
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error
+})
 
-export default (Register);
+export default connect(mapStateToProps, { register })(Register);
