@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import images from '../images/images.jpeg';
 // import side from '../images/side.png';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register } from '../actions/authActions';
 import { Alert } from 'react-bootstrap';
+import { clearErrors } from '../actions/errorActions'
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -21,6 +23,7 @@ class Register extends Component {
       email: '',
       password: '',
       msg: null,
+      redirect: false,
       formErrors: {
         firstname: '',
         lastname: '',
@@ -35,7 +38,8 @@ class Register extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
-    register: PropTypes.func.isRequired
+    register: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired
   }
 
   componentDidUpdate(prevProps) {
@@ -49,10 +53,15 @@ class Register extends Component {
       }
     }
 
-    // if authenticated redirect
+    // if authenticated redirect 
     if (isAuthenticated) {
-      this.push.history("/profile")
+      this.setState({ redirect: true });
+      this.SendRedirect()
     }
+  }
+
+  SendRedirect = () => {
+    this.props.clearErrors()
   }
 
   onSubmit(e) {
@@ -101,6 +110,9 @@ class Register extends Component {
 
   render() {
     const { formErrors } = this.state;
+    if (this.state.redirect) {
+      return <Redirect to='/profile' />
+    }
     return (
       <>
         <img src={images} className="backside" />
@@ -181,4 +193,4 @@ const mapStateToProps = state => ({
   error: state.error
 })
 
-export default connect(mapStateToProps, { register })(Register);
+export default connect(mapStateToProps, { register, clearErrors })(Register);

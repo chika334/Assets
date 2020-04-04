@@ -4,15 +4,11 @@ const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth');
 const bcrypt = require('bcrypt');
+const admin = require('../middleware/admin');
 
-router.get('/auth', auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) throw Error('No users exist');
-    res.json(user);
-  } catch (e) {
-    res.status(400).json({ msg: e.message });
-  }
+router.get('/auth', [auth, admin], async (req, res) => {
+  const user = await User.findById(req.user._id).select('-password');
+  res.send(user);
 })
 
 // saving users details to the database or registering users
@@ -40,7 +36,7 @@ router.post('/', async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
-  res.header('x-auth-token', token).send(user);
+  res.header('x-auth-token', token).send({ user, token });
 })
 
 module.exports = router; 

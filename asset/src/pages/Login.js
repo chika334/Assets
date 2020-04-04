@@ -2,26 +2,15 @@ import React, { Component } from 'react';
 import images from '../images/images.jpeg';
 import side from '../images/side.png';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../actions/authActions';
+import { Alert } from 'react-bootstrap';
+import { clearErrors } from '../actions/errorActions';
+import { Redirect } from 'react-router-dom'
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
-
-const formValid = ({ formErrors, ...rest }) => {
-  let valid = true;
-
-  // validate form errors being empty
-  Object.values(formErrors).forEach(val => {
-    val.length > 0 && (valid = false);
-  });
-
-  // validate the form was filled out
-  Object.values(rest).forEach(val => {
-    val === null && (valid = false);
-  });
-
-  return valid;
-};
 
 class Login extends Component {
   constructor(props) {
@@ -30,6 +19,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      msg: null,
+      redirect: false,
       formErrors: {
         email: "",
         password: ""
@@ -40,11 +31,47 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e, props) {
-    e.preventDefault();
-    if (formValid(this.state)) {
-      console.log("good")
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired
+  }
+
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props;
+    if (error !== prevProps.error) {
+      // Check for register error
+      if (error.id === 'LOGIN_FAIL') {
+        this.setState({ msg: error.msg.msg })
+      } else {
+        this.setState({ msg: null })
+      }
     }
+
+    // if authenticated redirect
+    if (isAuthenticated) {
+      this.setState({ redirect: true });
+      this.SendRedirect();
+    }
+  }
+
+  SendRedirect = () => {
+    this.props.clearErrors()
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+
+    const user = {
+      email,
+      password
+    }
+
+    // Attempt to login
+    this.props.login(user)
   }
 
   handleChange(e) {
@@ -71,6 +98,9 @@ class Login extends Component {
 
   render() {
     const { formErrors } = this.state;
+    if (this.state.redirect) {
+      return <Redirect to='/profile' />
+    }
     return (
       <>
         <img src={images} className="backside" />
@@ -82,6 +112,7 @@ class Login extends Component {
             <div className="wrapper">
               <div className="form-wrapper">
                 <h1>Login</h1>
+                {this.state.msg ? <Alert variant="danger">{this.state.msg}</Alert> : null}
                 <form onSubmit={this.handleSubmit} noValidate>
                   <div className="email">
                     <label htmlFor="email">Email</label>
@@ -112,7 +143,7 @@ class Login extends Component {
                     )}
                   </div>
                   <div className="createAccount">
-                    <button type="submit">Create Account</button>
+                    <button type="submit">Login</button>
                   </div>
                 </form>
               </div>
@@ -124,4 +155,9 @@ class Login extends Component {
   }
 }
 
-export default (Login);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error
+})
+
+export default connect(mapStateToProps, { login, clearErrors })(Login);

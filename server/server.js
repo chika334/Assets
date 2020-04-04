@@ -10,10 +10,10 @@ const cookieParser = require('cookie-parser');
 const users = require('./routes/users');
 const login = require('./routes/login');
 
-// if (!config.get('jwtPrivateKey')) {
-//   console.error('Fatal error: jwtPrivateKey not defined');
-//   process.exit(1);
-// }
+if (!config.get('jwtPrivateKey')) {
+  console.error('Fatal error: jwtPrivateKey not defined');
+  process.exit(1);
+}
 
 app.use(cors({ origin: true, credentials: true }))
 app.use(morgan('dev'));

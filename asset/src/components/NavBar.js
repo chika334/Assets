@@ -1,62 +1,102 @@
-import React, { Component } from 'react';
-import {Navbar, Nav} from 'react-bootstrap';
-import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { Navbar, NavbarBrand, NavbarToggler, Nav, NavLink, NavItem, Collapse, Container } from 'reactstrap';
+import { connect } from 'react-redux'
+import { Link, withRouter } from 'react-router-dom';
 import logo from '../images/logo.png';
-// import {login, register} from '../actions/userActions';
+import Logout from '../pages/Logout';
+import PropTypes from 'prop-types';
 
 class NavBar extends Component {
+  state = {
+    isOpen: false
+  }
+
+  static propTypes = {
+    auth: PropTypes.object.isRequired
+  }
+
+  toggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
   render() {
-    const users = this.props.user
-    // console.log(users)
-    if(users === undefined) {
-      return(
-        <Navbar collapseOnSelect>
-          <Navbar.Brand href="#home">
-          <img src={logo} className="img" />
-          Freshaluck
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="navlink">
-              <Link to="/">Home</Link>
-              <Link to="/about/">About</Link>
-              <Link to="/contact/">Contact</Link>
-              <Link to="/register/">Signup</Link>
+    const { isAuthenticated, user } = this.props.auth;
+
+    const authLinks = (
+      <Fragment>
+        <NavItem>
+          <NavLink href="#">dep 1</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">dep 2</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">dep 3</NavLink>
+        </NavItem>
+        {
+          isAuthenticated && user.isAdmin ?
+            <NavItem>
+              <NavLink href="/register">SignUp</NavLink>
+            </NavItem> : ""
+        }
+        <NavItem>
+          <span className="navbar-text mr-3">
+            <strong>
+              {user ? `Welcome ${user.firstname}` : ''}
+            </strong>
+          </span>
+        </NavItem>
+        <NavItem>
+          <Logout />
+        </NavItem>
+      </Fragment>
+    );
+
+    const adminLink = (
+      <Fragment>
+        <NavItem>
+          <NavLink href="/register">SignUp</NavLink>
+        </NavItem>
+      </Fragment>
+    )
+
+    const guestLink = (
+      <Fragment>
+        <NavItem>
+          <NavLink href="/">Home</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/about">About</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/contact">Contact</NavLink>
+        </NavItem>
+      </Fragment>
+    );
+    return (
+      <div className="ml-4">
+        <Navbar expand='sm'>
+          {/* <Container> */}
+          <NavbarBrand href="#home">
+            <img src={logo} className="img" />
+              Freshaluck
+            </NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse id="basic-navbar-nav" isOpen={this.state.isOpen} navbar>
+            <Nav className="navlink mr-5" navbar>
+              {isAuthenticated && adminLink ? authLinks : guestLink}
             </Nav>
-          </Navbar.Collapse>
+          </Collapse>
+          {/* </Container> */}
         </Navbar>
-      )
-    } 
-    else {
-      return (
-        <Navbar collapseOnSelect>
-          <Navbar.Brand href="#home">
-          <img src={logo} className="img" />
-          Freshaluck
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="navlink">
-              <Link to="/">Good</Link>
-              <Link to="/about/">Now</Link>
-              <Link to="/contact/">Letter</Link>
-              <Link to="/register/">Logout</Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      )
-    }
+      </div>
+    )
   }
 }
 
-// const mapStateToProps = (state, ownProps) => {
-//   const userdetails = ownProps ? state.user.loginSuccess : "error"
-//   // console.log(userdetails)
-//   return {
-//     user: userdetails
-//   }
-// }
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-// export default connect(mapStateToProps, {login})(NavBar);
-export default NavBar;
+export default connect(mapStateToProps, null)(NavBar);
