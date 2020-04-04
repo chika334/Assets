@@ -15,6 +15,7 @@ class Profile extends Component {
 							className="d-block w-100"
 							src={slide1}
 							alt="First slide"
+							height="450"
 						/>
 						<Carousel.Caption>
 							<h1>Freshaluck Assets</h1>
@@ -26,6 +27,7 @@ class Profile extends Component {
 							className="d-block w-100"
 							src={slide2}
 							alt="Third slide"
+							height="450"
 						/>
 						<Carousel.Caption>
 							<h1>Freshaluck Assets</h1>
@@ -37,6 +39,7 @@ class Profile extends Component {
 							className="d-block w-100"
 							src={slide3}
 							alt="Third slide"
+							height="450"
 						/>
 						<Carousel.Caption>
 							<h1>Freshaluck Assets</h1>

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Navbar, NavbarBrand, NavbarToggler, Nav, NavLink, NavItem, Collapse, Container } from 'reactstrap';
-import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import logo from '../images/logo.png';
 import Logout from '../pages/Logout';
 import PropTypes from 'prop-types';
@@ -85,7 +84,7 @@ class NavBar extends Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse id="basic-navbar-nav" isOpen={this.state.isOpen} navbar>
             <Nav className="navlink mr-5" navbar>
-              {isAuthenticated && adminLink ? authLinks : guestLink}
+              {isAuthenticated ? authLinks : guestLink}
             </Nav>
           </Collapse>
           {/* </Container> */}
