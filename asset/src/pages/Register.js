@@ -149,6 +149,18 @@ class Register extends Component {
                   <span className="errorMessage">{formErrors.lastname}</span>
                 )}
               </div>
+              {/* <div className="dep">
+                <label htmlFor="dep">Select Department</label>
+                <select>
+                  <option>Select Department</option>
+                  <option>Networking Department</option>
+                  <option>Software Department</option>
+                  <option>Hardware Department</option>
+                </select>
+                {formErrors.lastname.length > 0 && (
+                  <span className="errorMessage">{formErrors.lastname}</span>
+                )}
+              </div> */}
               <div className="email">
                 <label htmlFor="email">Email</label>
                 <input

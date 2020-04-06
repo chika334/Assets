@@ -23,6 +23,7 @@
     "express": "^4.16.3",
     "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.1.6",
+    "socket.io": "^2.3.0",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

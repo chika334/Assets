@@ -23,7 +23,7 @@
 /*end logo*/
 
 /* home.js styles */
-img.backside {
+.backside {
   /* Set rules to fill background */
   min-height: 100%;
   min-width: 1024px;

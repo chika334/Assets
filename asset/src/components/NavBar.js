@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Navbar, NavbarBrand, NavbarToggler, Nav, NavLink, NavItem, Collapse, Container } from 'reactstrap';
+import { Navbar, NavbarBrand, NavbarToggler, Nav, NavLink, NavItem, Collapse } from 'reactstrap';
 import { connect } from 'react-redux';
 import logo from '../images/logo.png';
 import Logout from '../pages/Logout';
@@ -25,20 +25,14 @@ class NavBar extends Component {
     const authLinks = (
       <Fragment>
         <NavItem>
-          <NavLink href="#">dep 1</NavLink>
+          <NavLink href='#'>Networking Department</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">dep 2</NavLink>
+          <NavLink href='#'>Software Department</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">dep 3</NavLink>
+          <NavLink href="#">Hardware Department</NavLink>
         </NavItem>
-        {
-          isAuthenticated && user.isAdmin ?
-            <NavItem>
-              <NavLink href="/register">SignUp</NavLink>
-            </NavItem> : ""
-        }
         <NavItem>
           <span className="navbar-text mr-3">
             <strong>
@@ -51,14 +45,6 @@ class NavBar extends Component {
         </NavItem>
       </Fragment>
     );
-
-    const adminLink = (
-      <Fragment>
-        <NavItem>
-          <NavLink href="/register">SignUp</NavLink>
-        </NavItem>
-      </Fragment>
-    )
 
     const guestLink = (
       <Fragment>
@@ -76,7 +62,6 @@ class NavBar extends Component {
     return (
       <div className="ml-4">
         <Navbar expand='sm'>
-          {/* <Container> */}
           <NavbarBrand href="#home">
             <img src={logo} className="img" />
               Freshaluck
@@ -87,7 +72,6 @@ class NavBar extends Component {
               {isAuthenticated ? authLinks : guestLink}
             </Nav>
           </Collapse>
-          {/* </Container> */}
         </Navbar>
       </div>
     )
