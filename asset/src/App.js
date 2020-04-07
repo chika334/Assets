@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
-// import networking from './pages/networking';
+import Networking from './pages/Networking';
 import Register from './pages/Register';
 // import Software from './pages/Software';
 // import Hardware from './pages/Hardware';
@@ -36,9 +36,9 @@ class App extends Component {
           <Route exact path="/about" component={About} />
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/profile" component={Profile} />
-          {/* <Route exact path="/network" component={networking} />
-          <Route exact path="/hardware" component={Hardware} />
-          <Route exact path="/software" component={Software} /> */}
+          <Route exact path="/network" component={Networking} />
+          {/* <Route exact path="/hardware" component={Hardware} /> */}
+          {/* <Route exact path="/software" component={Software} /> */}
           <Route exact component={Error} />
         </Switch>
         <Footer />

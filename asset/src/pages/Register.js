@@ -121,11 +121,11 @@ class Register extends Component {
             <h1>Create Account</h1>
             {this.state.msg ? <Alert variant="danger">{this.state.msg}</Alert> : null}
             <form onSubmit={this.onSubmit} noValidate>
-              <div className="first_name">
-                <label htmlFor="first_name">First name</label>
+              <div className="firstname">
+                <label htmlFor="firstname">First name</label>
                 <input
-                  placeholder="first_name"
-                  type="first_name"
+                  placeholder="First name"
+                  type="firstname"
                   name="firstname"
                   noValidate
                   value={this.state.firstname}
@@ -135,11 +135,11 @@ class Register extends Component {
                   <span className="errorMessage">{formErrors.firstname}</span>
                 )}
               </div>
-              <div className="last_name">
-                <label htmlFor="last_name">Last name</label>
+              <div className="lastname">
+                <label htmlFor="lastname">Last name</label>
                 <input
-                  placeholder="last_name"
-                  type="last_name"
+                  placeholder="Last name"
+                  type="lastname"
                   name="lastname"
                   noValidate
                   value={this.state.lastname}
@@ -149,18 +149,6 @@ class Register extends Component {
                   <span className="errorMessage">{formErrors.lastname}</span>
                 )}
               </div>
-              {/* <div className="dep">
-                <label htmlFor="dep">Select Department</label>
-                <select>
-                  <option>Select Department</option>
-                  <option>Networking Department</option>
-                  <option>Software Department</option>
-                  <option>Hardware Department</option>
-                </select>
-                {formErrors.lastname.length > 0 && (
-                  <span className="errorMessage">{formErrors.lastname}</span>
-                )}
-              </div> */}
               <div className="email">
                 <label htmlFor="email">Email</label>
                 <input

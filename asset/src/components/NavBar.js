@@ -25,7 +25,7 @@ class NavBar extends Component {
     const authLinks = (
       <Fragment>
         <NavItem>
-          <NavLink href='#'>Networking Department</NavLink>
+          <NavLink href='/network'>Networking Department</NavLink>
         </NavItem>
         <NavItem>
           <NavLink href='#'>Software Department</NavLink>

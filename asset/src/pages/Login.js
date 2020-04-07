@@ -110,7 +110,7 @@ class Login extends Component {
           </div>
           <div className="column">
             <div className="wrapper">
-              <div className="form-wrapper">
+              <div className="form-wrappers">
                 <h1>Login</h1>
                 {this.state.msg ? <Alert variant="danger">{this.state.msg}</Alert> : null}
                 <form onSubmit={this.handleSubmit} noValidate>
