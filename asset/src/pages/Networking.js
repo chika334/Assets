@@ -105,12 +105,19 @@ export class Networking extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.tableContent.map((newItem) => {
-                    {
-                      newItem.tableContent.map((tables) => {
-                        <td>{tables}</td>
-                      })
-                    }
+                  {this.state.tableContent.map(newItem => {
+                    console.log(newItem)
+                    // {
+                    //   newItem.tableContent.map(tables => {
+                    //     return (
+                    //       <>
+                    //         <td>{tables.departmentName}</td>
+                    //         <td>{tables.listOfAssets}</td>
+                    //         <td>{tables.uniqueId}</td>
+                    //       </>
+                    //     )
+                    //   })
+                    // }
                   })}
                 </tbody>
               </Table>
