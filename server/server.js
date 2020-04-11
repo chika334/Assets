@@ -6,9 +6,12 @@ const morgan = require('morgan');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server)
 
 const users = require('./routes/users');
 const login = require('./routes/login');
+const tables = require('./routes/tables')
 
 if (!config.get('jwtPrivateKey')) {
   console.error('Fatal error: jwtPrivateKey not defined');
@@ -21,13 +24,14 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 // app.use(cookieParser());
 
-mongoose.connect('mongodb://localhost/assets')
+const connect = mongoose.connect('mongodb://localhost/assets')
   .then(() => console.log('Connected to mongoDB'))
   .catch(err => console.error('Could not connect to mongoDB'))
 
 app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/login', login);
+app.use('/api/items', tables);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {

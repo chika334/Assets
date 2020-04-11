@@ -31,7 +31,7 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 // Register User
-export const register = ({ firstname, lastname, email, password, department }) => dispatch => {
+export const register = ({ firstname, lastname, email, password }) => dispatch => {
   // Headers
   const config = {
     headers: {
@@ -40,7 +40,7 @@ export const register = ({ firstname, lastname, email, password, department }) =
   }
 
   // Request body
-  const body = JSON.stringify({ firstname, lastname, email, password, department });
+  const body = JSON.stringify({ firstname, lastname, email, password });
 
   axios.post('http://localhost:5000/api/users', body, config)
     .then(res => dispatch({

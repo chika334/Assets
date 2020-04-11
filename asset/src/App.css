@@ -98,7 +98,7 @@ img.backside {
   }
 }
 
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+/* Responsive layout - makes the fom-wrapper stack on top of each other instead of next to each other */
 @media screen and (max-width: 900px) {
   .form-wrapper {
     width: 100%;
@@ -107,7 +107,7 @@ img.backside {
 
 .form-wrappers {
   height: 100%;
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -116,10 +116,10 @@ img.backside {
   background-color: #ffffff;
 }
 
-/* Responsive layout - makes a two column-layout instead of four columns */
-@media screen and (min-width: 300px) {
+/* Responsive layout - makes a two form-wrappers instead of four columns */
+@media screen and (min-width: 500px) {
   .form-wrappers {
-    width: 50%;
+    width: 100%;
   }
 }
 
@@ -230,40 +230,3 @@ input.error {
   font-weight: lighter;
 }
 /*end of home.js form styles */
-
-/* profile col */
-.lag {
-  display: flex;
-}
-
-.tag {
-  flex: 20%;
-  height: 40%;
-  width: 33.33%;
-  padding: 70px;
-}
-
-/* Responsive layout - makes a two column-layout instead of four columns */
-@media screen and (max-width: 900px) {
-  .tag {
-    width: 50%;
-  }
-}
-
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .tag {
-    width: 100%;
-  }
-}
-/* end profile col */
-
-/* profile table */
-#blue {
-  width: 100%;
-  padding: 30px;
-}
-
-#red {
-  padding: 20px;
-}

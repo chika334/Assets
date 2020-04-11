@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { Table, Container } from 'react-bootstrap'
+import { Table, Container, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { addItem } from '../actions/tableActions';
+import axios from 'axios'
 
 export class Networking extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      // DepartmentName: '',
-      Asset: '',
-      UniqueId: '',
+      departmentName: '',
+      listOfAssets: '',
+      uniqueId: '',
       tableContent: []
     }
     this.handleChange = this.handleChange.bind(this);
@@ -18,44 +20,44 @@ export class Networking extends Component {
   }
 
   static propTypes = {
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    // item: PropTypes.object.isRequired,
+    addItem: PropTypes.func.isRequired
   }
 
   handleClick(e) {
     e.preventDefault();
 
-    let tableContent = [...this.state.tableContent];
+    // let randomID = Math.floor(Math.random() * 999999);
+    var number = Math.random() // 0.9394456857981651
+    number.toString(36); // '0.xtis06h6'
+    var randomID = number.toString(36).substr(2, 9); // 'xtis06h6'
+    // randomID.length >= 9; // false
 
-    tableContent.push({
-      UniqueId: this.state.UniqueId,
-      Asset: this.state.Asset
-    })
+    const { departmentName, listOfAssets, uniqueId, tableContent } = this.state
+
+    let newItem = this.state.tableContent
+
+    newItem.push({
+      key: randomID,
+      uniqueId: randomID,
+      departmentName,
+      listOfAssets
+    });
 
     this.setState({
-      tableContent,
-      UniqueId: '',
-      Asset: ''
+      tableContent: newItem
     })
-    // Don't forget to check if the inputs are corrects
 
-    // Here i generate a random number for the key propriety that react need
-    // let randomID = Math.floor(Math.random() * 999999);
+    this.props.addItem(tableContent[0]);
+    // console.log(this.props)
+  }
 
-    // recreate a new object and stock the new line in
-    // let newTab = this.state.tableContent;
-    // newTab.push({
-    //   key: randomID,
-    //   title: "",
-    //   amount: "" // Don't forget to get the value of the inputs here
-    // });
-
-    // this.setState({
-    //   tableContent: newTab
-    // });
-
-    // Clear the content of the inputs
-
-    // the state has changed, so the tab is updated.
+  componentDidMount() {
+    axios.get('http://localhost:5000/api/items')
+      .then(({ data }) => this.setState({
+        tableContent: data
+      }))
   }
 
   handleChange(event) {
@@ -68,15 +70,12 @@ export class Networking extends Component {
     const { isAuthenticated, user } = this.props.auth;
 
     const admin = (
-      <form>
-        <label htmlFor="DepartmentName">Department Name</label>
-        <input type="text" name="DepartmentName" onChange={this.handleChange} />
+      <form onSubmit={this.handleClick}>
+        <label htmlFor="departmentName">Department Name</label>
+        <input type="text" name="departmentName" onChange={this.handleChange} />
 
-        <label htmlFor="Asset">Amount</label>
-        <input type="text" name="Asset" onChange={this.handleChange} />
-
-        <label htmlFor="UniqueId">Unique Id</label>
-        <input type="text" name="UniqueId" onChange={this.handleChange} />
+        <label htmlFor="Assets">Asset</label>
+        <input type="text" name="listOfAssets" onChange={this.handleChange} />
 
         <button type="button" id="add" onClick={this.handleClick}>Add item</button>
       </form>
@@ -96,8 +95,6 @@ export class Networking extends Component {
 
           <section>
             <Container>
-
-              {/* <h1>Items</h1> */}
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -108,19 +105,16 @@ export class Networking extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.tableContent.map((item) =>
-                    <tr key={item.key}>
-                      <td>{item.title}</td>
-                      <td>{item.amount}</td>
-                      {/* <td> */}
-                      {/* Here add the onClick for the action "remove it" on the span */}
-                      {/* <span>Remove it</span> */}
-                      {/* </td> */}
-                      <td></td>
-                    </tr>
-                  )}
+                  {this.state.tableContent.map((newItem) => {
+                    {
+                      newItem.tableContent.map((tables) => {
+                        <td>{tables}</td>
+                      })
+                    }
+                  })}
                 </tbody>
               </Table>
+              {/* <Button onSubmit={this.handleSubmit}>Submit</Button> */}
             </Container>
           </section>
         </section>
@@ -130,7 +124,8 @@ export class Networking extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  // item: state.item
 })
 
-export default connect(mapStateToProps, null)(Networking)
+export default connect(mapStateToProps, { addItem })(Networking)
