@@ -105,18 +105,15 @@ export class Networking extends Component {
                 </thead>
                 <tbody>
                   {items.map((newItem, index) => {
-                    // console.log(newItem)
                     {
                       newItem.tableContent.map(({ _id, departmentName, listOfAssets, uniqueId }) => {
-                        // console.log(tables)
                         return (
-                          { departmentName }
-                          // <tr key={_id}>
-                          //   <td>{index}</td>
-                          //   <td>{departmentName}</td>
-                          //   <td>{listOfAssets}</td>
-                          //   <td>{uniqueId}</td>
-                          // </tr>
+                          <tr key={_id}>
+                            <td>{index}</td>
+                            <td>{departmentName}</td>
+                            <td>{listOfAssets}</td>
+                            <td>{uniqueId}</td>
+                          </tr>
                         )
                       })
                     }
