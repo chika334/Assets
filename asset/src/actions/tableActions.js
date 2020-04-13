@@ -7,20 +7,20 @@ import {
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
 
-// export const getItems = () => (dispatch, getState) => {
-//   dispatch(setItemsLoading());
+export const getItems = () => (dispatch, getState) => {
+  dispatch(setItemsLoading());
 
-//   axios.get('http://localhost:5000/api/items')
-//     .then(res =>
-//       dispatch({
-//         type: GET_ITEMS,
-//         payload: res.data
-//       })
-//     )
-//     .catch(err =>
-//       dispatch(returnErrors(err.response.data, err.response.status))
-//     );
-// }
+  axios.get('http://localhost:5000/api/items')
+    .then(res =>
+      dispatch({
+        type: GET_ITEMS,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+}
 
 export const addItem = (item) => (dispatch, getState) => {
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Table, Container, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addItem } from '../actions/tableActions';
-import axios from 'axios'
+import { addItem, getItems } from '../actions/tableActions';
+// import { getItem } from '../actions/tableActions';
 
 export class Networking extends Component {
   constructor(props) {
@@ -21,8 +21,9 @@ export class Networking extends Component {
 
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    // item: PropTypes.object.isRequired,
-    addItem: PropTypes.func.isRequired
+    item: PropTypes.object.isRequired,
+    addItem: PropTypes.func.isRequired,
+    getItems: PropTypes.func.isRequired
   }
 
   handleClick(e) {
@@ -50,14 +51,6 @@ export class Networking extends Component {
     })
 
     this.props.addItem(tableContent[0]);
-    // console.log(this.props)
-  }
-
-  componentDidMount() {
-    axios.get('http://localhost:5000/api/items')
-      .then(({ data }) => this.setState({
-        tableContent: data
-      }))
   }
 
   handleChange(event) {
@@ -66,8 +59,14 @@ export class Networking extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.getItems()
+  }
+
   render() {
     const { isAuthenticated, user } = this.props.auth;
+    const { items } = this.props.item
+    // console.log(items)
 
     const admin = (
       <form onSubmit={this.handleClick}>
@@ -105,19 +104,22 @@ export class Networking extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.tableContent.map(newItem => {
-                    console.log(newItem)
-                    // {
-                    //   newItem.tableContent.map(tables => {
-                    //     return (
-                    //       <>
-                    //         <td>{tables.departmentName}</td>
-                    //         <td>{tables.listOfAssets}</td>
-                    //         <td>{tables.uniqueId}</td>
-                    //       </>
-                    //     )
-                    //   })
-                    // }
+                  {items.map((newItem, index) => {
+                    // console.log(newItem)
+                    {
+                      newItem.tableContent.map(({ _id, departmentName, listOfAssets, uniqueId }) => {
+                        // console.log(tables)
+                        return (
+                          { departmentName }
+                          // <tr key={_id}>
+                          //   <td>{index}</td>
+                          //   <td>{departmentName}</td>
+                          //   <td>{listOfAssets}</td>
+                          //   <td>{uniqueId}</td>
+                          // </tr>
+                        )
+                      })
+                    }
                   })}
                 </tbody>
               </Table>
@@ -125,14 +127,14 @@ export class Networking extends Component {
             </Container>
           </section>
         </section>
-      </section>
+      </section >
     );
   }
 }
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  // item: state.item
+  item: state.item,
 })
 
-export default connect(mapStateToProps, { addItem })(Networking)
+export default connect(mapStateToProps, { addItem, getItems })(Networking)

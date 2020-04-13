@@ -17,19 +17,3 @@ const ItemSchema = new Schema({
 const Item = model('item', ItemSchema);
 
 module.exports = Item;
-
-// departmentName: {
-//   type: { type: String },
-//   // value: String,
-//   // required: true
-// },
-// listOfAssets: {
-//   type: { type: String },
-//   // value: String,
-//   // required: true
-// },
-// uniqueId: {
-//   type: { type: String },
-//   // value: String,
-//   // required: true,
-// }
