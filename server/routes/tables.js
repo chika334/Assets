@@ -24,14 +24,14 @@ router.post('/', auth, async (req, res) => {
     }]
   });
 
-  try {
-    const item = await newItem.save();
-    if (!item) throw Error('Something went wrong with table');
+  // try {
+  const item = await newItem.save();
+  if (!item) throw Error('Something went wrong with table');
 
-    res.status(200).json(item);
-  } catch (err) {
-    res.status(400).json({ msg: err });
-  }
+  res.status(200).json(item);
+  // } catch (e) {
+  res.status(400).json({ msg: e.message });
+  // }
 })
 
 module.exports = router; 

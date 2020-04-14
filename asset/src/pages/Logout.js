@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { logout } from '../actions/authActions';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-bootstrap';
@@ -12,11 +12,11 @@ export class Logout extends Component {
 
   render() {
     return (
-      <Fragment>
+      <>
         <NavLink onClick={this.props.logout} href="/login">
           Logout
         </NavLink>
-      </Fragment>
+      </>
     )
   }
 }

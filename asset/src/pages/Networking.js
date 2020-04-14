@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
-import { Table, Container, Button } from 'react-bootstrap'
+import React, { Component } from 'react';
+import { Table, Container, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addItem, getItems } from '../actions/tableActions';
-// import { getItem } from '../actions/tableActions';
 
-export class Networking extends Component {
+class Networking extends Component {
   constructor(props) {
     super(props)
 
@@ -88,7 +87,7 @@ export class Networking extends Component {
         <section>
           <Container>
             {
-              isAuthenticated && user.isAdmin ? admin : console.log('bad')
+              isAuthenticated && user.isAdmin ? admin : null
             }
           </Container>
 
@@ -104,23 +103,18 @@ export class Networking extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((newItem, index) => {
-                    {
-                      newItem.tableContent.map(({ _id, departmentName, listOfAssets, uniqueId }) => {
-                        return (
-                          <tr key={_id}>
-                            <td>{index}</td>
-                            <td>{departmentName}</td>
-                            <td>{listOfAssets}</td>
-                            <td>{uniqueId}</td>
-                          </tr>
-                        )
-                      })
-                    }
-                  })}
+                  {items.map((newItem, index) => (
+                    newItem.tableContent.map(({ _id, departmentName, listOfAssets, uniqueId }) => (
+                      <tr key={_id}>
+                        <td>{index}</td>
+                        <td>{departmentName}</td>
+                        <td>{listOfAssets}</td>
+                        <td>{uniqueId}</td>
+                      </tr>
+                    ))
+                  ))}
                 </tbody>
               </Table>
-              {/* <Button onSubmit={this.handleSubmit}>Submit</Button> */}
             </Container>
           </section>
         </section>
