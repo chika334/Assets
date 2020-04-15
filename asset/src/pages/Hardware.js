@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { Table, Container, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addItem, getItems } from '../actions/tableActions';
+import { addItem, getItems } from '../actions/hardwareAction';
 import '../css/proform.css';
 
-class Networking extends Component {
+class Hardware extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       departmentName: '',
       listOfAssets: '',
-      tableContent: []
+      tableHardware: []
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -20,7 +20,7 @@ class Networking extends Component {
 
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    item: PropTypes.object.isRequired,
+    hardware: PropTypes.object.isRequired,
     addItem: PropTypes.func.isRequired,
     getItems: PropTypes.func.isRequired
   }
@@ -32,9 +32,9 @@ class Networking extends Component {
     number.toString(36); // '0.xtis06h6'
     var randomID = number.toString(36).substr(2, 9); // 'xtis06h6'
 
-    const { departmentName, listOfAssets, tableContent } = this.state
+    const { departmentName, listOfAssets, tableHardware } = this.state
 
-    let newItem = this.state.tableContent
+    let newItem = this.state.tableHardware
 
     newItem.push({
       key: randomID,
@@ -44,10 +44,10 @@ class Networking extends Component {
     });
 
     this.setState({
-      tableContent: newItem
+      tableHardware: newItem
     })
 
-    this.props.addItem(tableContent[0]);
+    this.props.addItem(tableHardware[0]);
   }
 
   handleChange(event) {
@@ -62,8 +62,7 @@ class Networking extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-    const { items } = this.props.item
-    // console.log(items)
+    const { hardware } = this.props.hardware
 
     const admin = (
       <form onSubmit={this.handleClick}>
@@ -83,7 +82,7 @@ class Networking extends Component {
     return (
       <section className="App">
         <header>
-          <h1>Network Department</h1>
+          <h1>Hardware Department</h1>
         </header>
 
         <section>
@@ -105,8 +104,8 @@ class Networking extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((newItem, index) => (
-                    newItem.tableContent.map(({ _id, departmentName, listOfAssets, uniqueId }) => (
+                  {hardware.map((newItem, index) => (
+                    newItem.tableHardware.map(({ _id, departmentName, listOfAssets, uniqueId }) => (
                       <tr key={_id}>
                         <td>{index}</td>
                         <td>{departmentName}</td>
@@ -127,7 +126,8 @@ class Networking extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  item: state.item,
+  // hardware: console.log(state.hardware),
+  hardware: state.hardware
 })
 
-export default connect(mapStateToProps, { addItem, getItems })(Networking)
+export default connect(mapStateToProps, { addItem, getItems })(Hardware)

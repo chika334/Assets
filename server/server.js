@@ -9,7 +9,9 @@ const cookieParser = require('cookie-parser');
 
 const users = require('./routes/users');
 const login = require('./routes/login');
-const tables = require('./routes/tables')
+const tables = require('./routes/tables');
+const software = require('./routes/software');
+const hardware = require('./routes/hardware');
 
 if (!config.get('jwtPrivateKey')) {
   console.error('Fatal error: jwtPrivateKey not defined');
@@ -30,6 +32,8 @@ app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/login', login);
 app.use('/api/items', tables);
+app.use('/api/software', software);
+app.use('/api/hardware', hardware);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {

@@ -28,10 +28,10 @@ class NavBar extends Component {
           <NavLink href='/network'>Networking Department</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href='#'>Software Department</NavLink>
+          <NavLink href='/software'>Software Department</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">Hardware Department</NavLink>
+          <NavLink href="/hardware">Hardware Department</NavLink>
         </NavItem>
         <NavItem>
           <span className="navbar-text mr-3">

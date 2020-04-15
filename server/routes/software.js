@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth');
-const Item = require('../models/Tables')
+const Software = require('../models/software')
 
 router.get('/', async (req, res) => {
   try {
-    const items = await Item.find();
-    if (!items) throw Error('No items');
+    const software = await Software.find();
+    if (!software) throw Error('No items');
 
-    res.status(200).json(items);
+    res.status(200).json(software);
   } catch (e) {
     res.status(400).json({ msg: e.message })
   }
@@ -16,8 +16,8 @@ router.get('/', async (req, res) => {
 
 // saving table details to the database
 router.post('/', auth, async (req, res) => {
-  const newItem = new Item({
-    tableContent: [{
+  const newSoftware = new Software({
+    tableSoftware: [{
       departmentName: req.body.departmentName,
       listOfAssets: req.body.listOfAssets,
       uniqueId: req.body.uniqueId
@@ -25,10 +25,10 @@ router.post('/', auth, async (req, res) => {
   });
 
   try {
-    const item = await newItem.save();
-    if (!item) throw Error('Something went wrong with table');
+    const software = await newSoftware.save();
+    if (!software) throw Error('Something went wrong with table');
 
-    res.status(200).json(item);
+    res.status(200).json(software);
   } catch (e) {
     res.status(400).json({ msg: e.message });
   }
